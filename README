@@ -1,0 +1,14 @@
+Color_magic animovaný vykreslovač grafů
+########################################
+
+Pro seznámení s fungováním skriptu na uživatelské úrovní slouží manuálová stránka. 
+Otevření manuálové stránky: cd dokumentace; man ./manpage.1
+
+Pro detailnější popis práce skriptu slouží programátoská dokumentace.
+Soubor: dokumentace/program.pdf
+
+K praktické ukázce funkčnosti skriptu color_magic slouží skript tests.py
+Spuštění: ./tests.py
+Po spuštění se zobrazí název prováděného testu, který se po stisku klávesy enter provede. Pokud chcete testovací skript ukončit před dokončením všech testů stiskněte: ctrl+d. Pokud chtece nějaký test předčasně ukončit, tak stikněte: ctrl+c.
+Soubory potřebné k ukázkám jsou uloženy v adresáři testy.
+

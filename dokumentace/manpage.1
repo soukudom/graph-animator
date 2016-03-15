@@ -1,0 +1,248 @@
+.TH "Color_magic" 1 "2014/04/7" 
+.SH NAME
+color_magic \- zobrazuje datové soubory jako animaci grafu
+.SH SYNOPSIS
+.B color_magic 
+.RS
+ [\-h] [\-t TIMEFORMAT] [\-X XMAX] [\-x XMIN] [\-Y YMAX]
+ [\-y YMIN] [\-S SPEED] [\-T TIME] [\-F FPS] [\-c CRITICALVALUE]
+ [\-l LEGEND] [\-g GNPLOTPARAMS] [\-e EFFECTPARAMS]
+ [\-f F] [\-n NAME] [\-E]
+.IR input 
+[\input...]
+
+.SH DESCRIPTION
+Color_magic je skript, který ze zadaných vstupních dat (uložených v souboru/souborech nebo na webu) vytvoří animaci grafu. Animace vykresluje grafy barevně v různých barevných odstínech (pro každý vykreslovaný soubor je zvolen jiný barevný odstín a každá část grafu se skládá ze dvou barev). Výstupní soubor je uložen v adresáři s názvem podle přepínaše -n (jinak název skriptu). Skript je možné parametrizovat pomocí přepínačů a pomocí konfiguračního souboru (přednost mají přepínače).
+
+Hodnoty a význam přepínačů jsou popsány níže viz. sekce
+.B OPTIONS
+
+Pro konfigurační soubor platí:
+.RS
+ Text začínající # představuje komentář od tohoto znaku včetně až do konce řádku.
+ Prázdné řádky jsou nevýznamné, stejně jako řádky obsahující pouze bílé znaky.
+ Na jednou řádku může být maximálně jedna direktiva.
+ Direktiva obsahuje právě jedno slovo.
+ Konfigurační soubor nebere ohled na velikost písmen.
+ Direktiva má právě jednu hodnotu.
+ Direktiva může být uvedena tolikrát, kolikrát lze použít přepínač na příkazové řádce.
+ Pokud lze použít direktivu pouze jednou, platí hodnota jejího posledního výskytu.
+ Direktiva a její hodnota je oddělena mezerou nebo tabelátorem (nebo jejich kombinací).
+.RE
+
+Pokud je zadáno více vstupních souborů, uvažují se 2 situace:
+     časové intervaly jednotlivých souborů se nepřekrývají
+        pro všechny soubory je vykreslován jeden celistvý graf (uspořádání provádí skript)
+
+     časové intervaly alespoň dvou souborů se překrývají
+        pro každý soubor se kreslý samostatná křívka (uspořádání provádí skript)
+
+.B  Formát výstupu
+    Výstupem souboru je jedna animace ve formátu mp4. Animace je umístěna v adresáři s názvem podle přepínače -n (jinak název skriptu).
+.SH OPTIONS
+.TP 20
+.B -h, --help
+Zobrazí nápovědu
+.TP
+.B -t TIMEFORMAT, --timeformat=TIMEFORMAT
+Nastavení časového formátu vstupního souboru
+
+Typem hodnoty je časový formát podle 
+.B strftime(3c).
+Pokud přepínáč není zadán, tak se jako implicitní hodnota nastaví 
+.B [%Y-%m-%d %H:%M:%S]
+.TP
+.B -X XMAX, --xmax=XMAX
+Nastavení maximální souřadnice na ose X
+
+Zadat lze 3 typy hodnot: 
+.B auto
+, 
+.B max 
+a 
+.B value. 
+Hodnota
+.B auto 
+zajistí, že osa X bude postupně narůstat s postupně vykreslujícími daty.
+Hodnota 
+.B max 
+nastaví osu X na maximální hodnou, kterou skript nalezl v zadaných vstupních souborech.
+Hodnota 
+.B value
+umožňuje uživateli nastavit libovolnou maximální hodnotu na ose X. Hodnota se musí shodovat s formátem přepínače
+.B timeformat.
+Pokud přepínač není zadán, tak se jako implicitní hodnota nastaví
+.B max.
+.TP
+.B -x XMIN, --xmin=XMIN
+Nastavení minimální souřadnice na ose X
+
+Zadat lze 3 typy hodnot:
+.B auto
+,
+.B min
+a
+.B value.
+Hodnota
+.B auto 
+zajistí, že osa X bude postupně narůstat s postupně vykreslujícími daty (například při vykreslování zprava doleva).
+Hodnota
+.B min
+nastaví osu X na minimální hodnotu, kterou skript nalezl v zadaných vstupních souborech.
+Hodnota
+.B value
+umožňuje uživateli nastavit libovolnou minimální hodnotu na ose X. Hodnota se musí shodovat s formátem přepínače
+.B timeformat.
+Pokud přepínač není zadán, tak se jako implicitní hodnota nastaví
+.B min.
+.TP
+.B -Y YMAX, --ymax=YMAX
+Nastavení maximální souřadnice na ose Y
+
+Zadat lze 3 typy hodnot: 
+.B auto
+, 
+.B max 
+a 
+.B value. 
+Hodnota
+.B auto 
+zajistí, že osa Y bude postupně narůstat s postupně vykreslujícími daty.
+Hodnota 
+.B max 
+nastaví osu Y na maximální hodnou, kterou skript nalezl v zadaných vstupních souborech.
+Hodnota 
+.B value
+umožňuje uživateli nastavit libovolnou maximální hodnotu na ose Y. Hodnota musí být celočíselného formátu. Pokud přepínač není zadán, tak se jako implicitní hodnota nastaví
+.B auto.
+.TP
+.B -y YMIN, --ymin=YMIN
+Nastavení minimální souřadnice na ose Y
+
+Zadat lze 3 typy hodnot:
+.B auto
+,
+.B min
+a
+.B value.
+Hodnota
+.B auto 
+zajistí, že osa Y bude postupně narůstat s postupně vykreslujícími daty.
+Hodnota
+.B min
+nastaví osu Y na minimální hodnotu, kterou skript nalezl v zadaných vstupních souborech.
+Hodnota
+.B value
+umožňuje uživatel nastavit libovolnou minimální hodnotu na se Y. Hodnota musí být celočíselného formátu. Pokud přepínač není zadán, tak se jako implicitní naství
+.B auto.
+.TP
+.B -S SPEED, --speed=SPEED
+Rychlost vykreslování animace.
+
+Hodnota přepínače
+.B --speed
+udává kolik řádků vstupního datového souboru bude tvořit jeden snímek animace. Hodnota musí být celočíselného formátu. Pokud přepínač není zadán, tak se jako implicitní nastaví
+.B 1.
+.TP
+.B -T TIME, --time=TIME
+Délka animace
+
+Hodnota přepínače
+.B --time
+udává kolik sekund by měla výsledná animace vykreslovat data. Hodnota musí být celočíselného formátu. Pokud přepínač není zadán, tak se výsledná hodnota dopočítá z hodnot přepínačů
+.B --fps,
+.B --speed
+a počtu řádků vstupního souboru.
+.TP
+.B -F FPS, --fps=FPS
+Nastavení FPS animace
+
+Hodnota přepínače
+.B --fps
+udává, jak velké bude fps výsledné animace, neboli kolik snímků za sekundu se použije. Hodnota musí být celočíselného formátu. Pokud přepínač není zadán, tak se jako implicitní hodnota nastaví
+.B 25.
+.TP
+.B -l LEGEND, -legend=LEGEND
+Nastavení legendy animace
+
+Hodnotou přepínače
+.B --legend
+je libovolný řetězec, který bude zobrazen jako legenda výsledné animace. Pokud přepínač není zadán, tak výsledná animace nemá žádnou legendu.
+.TP
+.B -g GNUPLOTPARAMS, --gnuplotparams=GNUPLOTPARAMS
+Atributy pro nastavení gnuplotu
+
+Tento přepínač se může libovolněkrát opakovat. Jeho hodnotou je řetězec, který obsahuje nastavení vlastností vykreslovaní ve formátu, který přijímá program gnuplot.
+.TP
+.B -e EFFECTPARAMS, --effectparams=EFFECTPARAMS
+Nastavení efektu vykreslování
+
+Tento přepínač se může libovolněkrát opakovat. Hodnota přepínače
+.B --effectparams
+musí být zadána ve formátu
+.B smer=val:param=valu
+,kde část
+.B val
+může nabývat pouze hodnot 
+.B 1
+,
+.B 2
+nebo
+.B 3.
+Hodnota
+.B 1
+provádí vykreslování zleva doprava.
+Hodnota
+.B 2
+provádní vykreslovaní z obou stran najednou.
+Hodnota 
+.B 3
+provádí vykreslování z prava doleva.
+Formát hodnoty je velmi obecný. Přijímá se opakované použití přepínače
+.B --effectparams
+i s několika parametry oddělenými dvojtečkou. Ovšem vliv na efekt má pouze první část hodnoty, jejíž název musí splňovat přesně tvar
+.B smer=val
+(val může nabývat výše uvedených hodnot). Ostatní části mohou nabývat hodnot:
+.B param
+libovolný znakový řetězec, 
+.B valu
+libolný alfanumerický řetězec. Pokud přepínač není zadán, tak se jako implicitní
+hodnota nastaví
+.B smer=1.
+.TP
+.B -f FILE
+konfigurační souboru
+
+Hodnotou přepínače 
+.B -f
+je název konfiguračního souboru, kde jsou jednotlivé parametry skriptu popsány.
+Pokud jsou současně s konfiguračním souborem použity přepínače, tak se dává přednost přepínačům.
+.TP
+.B -n NAME, --name=NAME
+Název výstupního adresáře s animací
+
+Hodota přepínače
+.B --name
+je řetězec, který obsahuje název výstupního adresáře s animací. Řetězec může obsahovat i adresářovou cestu. Pokud cesta existuje, pak je na jejím konci vytvořen daný adresář. Implicitním názvem výstupního adresáře je color_magic (jméno spuštěného skriptu). Pokud adresář již existuje vytvoří se nový adresář s pořadovým číslem na konci.
+.TP
+.B -E, --ignoreerrors
+Ignorovaní chyb
+
+Pokud při parametrizování a následném spuštění skriptu došlo k nějaké chybě (z důvodu chyby přepína4e). Lze pomocí přepínače
+.B --ignoreerrors
+potlačit tyto chyby a pokusit se vytvořit animaci. Implicitně je ignorování chyb vypnuté.
+
+.SH EXAMPLES
+Jako ukázka používání skriptu
+.B color_magic
+slouží skript
+.B tests.py,
+který lze standatně spustit:
+ ./tests.py
+
+.SH SEE ALSO
+Podrobnější informace v podobě programátorské dokumentace se nachází v souboru
+.B program.pdf
+
+.SH AUTHOR
+Dominik Soukup <soukudom@fit.cvut.cz>
